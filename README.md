@@ -2,6 +2,10 @@
 
 Juego de supervivencia zombi 2D para navegador, con combate híbrido (disparo manual + apoyo automático), movimiento libre y progresión por misiones. Primera sala multijugador de 1–4 jugadores incorporada; el combate compartido se implementará por fases.
 
+## Biblia de diseño y nueva dirección artística
+
+**Documento canónico para Codex:** [Biblia visual y de diseño](docs/biblia-visual-diseno.md). La nueva dirección es **2D ilustrado, top-down, colorida pero sombría**, con personajes caricaturescos e iluminación dinámica. **Se descartó el pixel art de 8 bits.** Las referencias sirven de inspiración; no se reutilizan recursos de otros juegos sin licencia.
+
 ## Estado
 
 Prototipo Canvas 2D conservado en `public/legacy/index.html`, con pruebas reales de navegador mediante Playwright. Phaser ya es una dependencia, pero el juego todavía no lo utiliza. La portada permanece en `/` y el prototipo en `/legacy/index.html`.
@@ -38,7 +42,7 @@ codex
 
 ## Prioridades v0.3
 
-1. Arte pixel art más reconocible, con personajes y zombis animados y escenarios urbanos coherentes.
+1. Arte 2D ilustrado original y coherente, personajes y zombis animados, escenarios urbanos detallados, sombras e iluminación.
 2. Mundo más amplio, cámara que sigue al jugador, exploración y puntos de interés.
 3. Escalado de dificultad real (hordas, enemigos especiales y control de mejoras).
 4. Armas evolucionables inspiradas en juegos arcade: tiro triple, láser, ráfaga y munición perforante.
