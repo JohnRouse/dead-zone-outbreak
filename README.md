@@ -4,7 +4,7 @@ Juego de supervivencia zombi 2D para navegador, con combate híbrido (disparo ma
 
 ## Estado
 
-Repositorio inicializado para el desarrollo con Codex CLI y pruebas de navegador con Playwright. La versión HTML jugable v0.2 debe incorporarse en `legacy/index.html` como referencia antes de migrar su lógica por módulos.
+Repositorio inicializado para el desarrollo con Codex CLI y pruebas de navegador con Playwright. La versión HTML jugable v0.2 debe incorporarse en `public/legacy/index.html` como referencia antes de migrar su lógica por módulos.
 
 ## Desarrollo local
 
