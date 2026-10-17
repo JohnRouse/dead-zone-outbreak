@@ -1,5 +1,9 @@
 # Instrucciones para Codex — Dead Zone Outbreak
 
+## Documento rector de diseño
+- Antes de planificar tareas, leer [`docs/biblia-visual-diseno.md`](docs/biblia-visual-diseno.md). Sus decisiones creativas reemplazan las referencias anteriores a 8 bits/pixel art. Implementar por etapas con aprobación visual humana.
+- Distinguir visión futura de funcionalidades que realmente existen. No intentar desarrollar toda la biblia en un solo encargo.
+
 ## Objetivo
 Desarrollar un juego 2D de zombis para navegador con combate híbrido y futura cooperación en línea. Responder en español en reportes de progreso.
 
@@ -9,7 +13,7 @@ Desarrollar un juego 2D de zombis para navegador con combate híbrido y futura c
 - Combate: armas manuales y automáticas evolucionables, cadencia, disparo triple, láser, ráfagas y perforación claramente diferenciados.
 - La dificultad no debe volverse trivial después de subir de nivel: medir daño recibido, presión de hordas y capacidad de supervivencia.
 - Escenario explorable, mayor que la pantalla; cámara siguiendo al personaje, colisiones coherentes y puntos de interés.
-- Arte pixel art original y consistente; evitar sprites geométricos provisionales como versión final. No usar assets de juegos comerciales sin licencia.
+- Arte 2D **ilustrado, NO pixel art**, original y consistente; estética colorida pero sombría, top-down, sombras e iluminación expresiva. Evitar sprites geométricos provisionales como versión final y no usar assets de juegos comerciales sin licencia.
 - Diseñar módulos independientes para habilitar en el futuro servidor autoritativo y cooperativo de 1–4 jugadores.
 
 ## Ciclo de trabajo obligatorio
