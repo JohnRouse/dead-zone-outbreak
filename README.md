@@ -8,9 +8,11 @@ Juego de supervivencia zombi 2D para navegador, con combate híbrido (disparo ma
 
 ## Estado
 
-Prototipo Canvas 2D conservado en `public/legacy/index.html`, con pruebas reales de navegador mediante Playwright. Una **primera escena ilustrada local en Phaser** está disponible en `/phaser/`, pendiente de aprobación visual: calle húmeda, iluminación tenue/diurna, superviviente animado, caminantes y pesados, controles híbridos, cámara, colisiones, pausa y reinicio. [Alcance, plan y verificación](docs/demo-visual-etapa-1.md). La portada permanece en `/` y el prototipo en `/legacy/index.html`.
+Prototipo Canvas 2D conservado en `public/legacy/index.html`, con pruebas reales de navegador mediante Playwright. La **segunda iteración de la escena ilustrada local en Phaser** está disponible en `/phaser/`, pendiente de revisión visual y jugable: calle húmeda, iluminación tenue/diurna, superviviente animado, caminantes y pesados con rutas/ataques, apariciones anunciadas por puertas y un fusil personal con modos automático/manual que comparten cadencia y cargador. Conserva movimiento, dash, cámara, colisiones, pausa y reinicio. [Plan, cambios y verificación de iteración 2](docs/iteracion-2-plan-y-revision.md); [registro de la primera entrega](docs/demo-visual-etapa-1.md). La portada permanece en `/` y el prototipo en `/legacy/index.html`.
 
 Esta escena no contiene aún interiores transitables, progresión, campañas ni combate en red. El arte vectorial es original y reproducible: [procedencia y anclajes](public/assets/README.md). No se sustituye la experiencia legacy ni se completa toda la migración.
+
+En Phaser, sin clic el fusil apunta y dispara automáticamente; manteniendo clic se dirige al cursor. Ambos modos usan el mismo cargador de diez y recarga automática de 1.5 s. `npm run measure:reference` genera mediciones con semillas fijas. Con Vite iniciado en 5173, `npm run record:reference` graba un recorrido Playwright con reloj real. Ejecutar ambos después de las pruebas, que regeneran `test-results/`.
 
 Diagnóstico, evidencia y alcance: [docs/diagnostico-legacy.md](docs/diagnostico-legacy.md). Plan por etapas y criterios de aceptación: [docs/migracion-phaser.md](docs/migracion-phaser.md). Resumen listo para revisión: [docs/revision-base-pruebas.md](docs/revision-base-pruebas.md).
 
