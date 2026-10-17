@@ -8,7 +8,9 @@ Juego de supervivencia zombi 2D para navegador, con combate híbrido (disparo ma
 
 ## Estado
 
-Prototipo Canvas 2D conservado en `public/legacy/index.html`, con pruebas reales de navegador mediante Playwright. Phaser ya es una dependencia, pero el juego todavía no lo utiliza. La portada permanece en `/` y el prototipo en `/legacy/index.html`.
+Prototipo Canvas 2D conservado en `public/legacy/index.html`, con pruebas reales de navegador mediante Playwright. Una **primera escena ilustrada local en Phaser** está disponible en `/phaser/`, pendiente de aprobación visual: calle húmeda, iluminación tenue/diurna, superviviente animado, caminantes y pesados, controles híbridos, cámara, colisiones, pausa y reinicio. [Alcance, plan y verificación](docs/demo-visual-etapa-1.md). La portada permanece en `/` y el prototipo en `/legacy/index.html`.
+
+Esta escena no contiene aún interiores transitables, progresión, campañas ni combate en red. El arte vectorial es original y reproducible: [procedencia y anclajes](public/assets/README.md). No se sustituye la experiencia legacy ni se completa toda la migración.
 
 Diagnóstico, evidencia y alcance: [docs/diagnostico-legacy.md](docs/diagnostico-legacy.md). Plan por etapas y criterios de aceptación: [docs/migracion-phaser.md](docs/migracion-phaser.md). Resumen listo para revisión: [docs/revision-base-pruebas.md](docs/revision-base-pruebas.md).
 

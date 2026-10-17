@@ -8,7 +8,9 @@
     "dev:server": "tsx server/index.ts",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
-    "test": "npm run test:server && npm run test:e2e",
+    "test": "npm run test:simulation && npm run test:server && npm run test:e2e",
+    "test:simulation": "tsx --test src/simulation/*.test.ts",
+    "art:reference": "tsx scripts/reference-art.ts",
     "test:server": "tsx --test server/tests/*.test.ts",
     "test:e2e": "playwright test",
     "test:ui": "playwright test --ui"
