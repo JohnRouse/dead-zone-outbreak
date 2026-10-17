@@ -1,6 +1,6 @@
 // Arte vectorial original de la escena de referencia. Reproducible, sin descargas.
 // Ejecutar: npx tsx scripts/reference-art.ts
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync, readFileSync } from 'node:fs';
 import { BUILDINGS, LAMPS, PROPS, WORLD } from '../src/content/reference-district';
 const base = 'public/assets';
 for (const directory of ['world', 'characters', 'enemies', 'vfx']) mkdirSync(`${base}/${directory}`, { recursive: true });
@@ -103,8 +103,48 @@ function building(b: typeof BUILDINGS[number]) {
   const door = w / 2 - 38;
   result += rect(door - 8, h - 93, 92, 91, '#182c35', 4, outline, 4) + rect(door, h - 86, 76, 83, '#34525b', 3, '#95a69a', 3);
   result += rect(door + 8, h - 76, 60, 38, '#d3a46c', 3) + path(`M${door + 50} ${h - 27} h12`, 'none', '#edc783', 4);
-  result += rect(w / 2 - 105, h - 143, 210, 42, '#182d38', 7, '#87928a', 3) + text(w / 2, h - 113, name, 27, sign, 'text-anchor="middle" letter-spacing="3"');
   result += path(`M-9 ${h - 120} H${w + 9}`, 'none', '#91a69b', 8) + path(`M-9 ${h - 112} H${w + 9}`, 'none', '#172e39', 5);
+  // Rótulo por delante de cornisa y tuberías; área segura, sin texto cortado.
+  const signW = name.length > 7 ? 270 : 232;
+  result += rect(w / 2 - signW / 2 + 4, h - 161, signW, 52, '#10232d', 7, outline, 3);
+  result += rect(w / 2 - signW / 2, h - 166, signW, 50, '#243d46', 7, '#8c9e91', 3);
+  result += path(`M${w / 2 - signW / 2 + 12} ${h - 157} H${w / 2 + signW / 2 - 12}`, 'none', '#667b76', 2);
+  result += text(w / 2, h - 131, name, 27, sign, 'text-anchor="middle" letter-spacing="2"');
+  for (const sx of [-signW / 2 + 10, signW / 2 - 10]) result += ellipse(w / 2 + sx, h - 141, 2, 2, '#d4c6a0');
+  // Cuatro identidades en los edificios existentes, sin cambiar su huella sólida.
+  if (name === 'BOTICA') {
+    result += rect(w - 212, 166, 136, 78, '#27454d', 6, outline, 4);
+    result += rect(w - 219, 157, 136, 78, '#6e8d84', 6, '#263f49', 3);
+    for (let j = 171; j < 224; j += 10) result += path(`M${w - 205} ${j} h108`, 'none', '#31565a', 4);
+    result += rect(24, h - 208, 52, 52, '#223e43', 9, '#85b692', 3);
+    result += path(`M38 ${h - 182} h24 M50 ${h - 194} v24`, 'none', '#badca6', 7);
+    result += path(`M140 ${h - 98} Q${w / 2} ${h - 115} ${w - 140} ${h - 98}`, 'none', '#6fa68e', 6);
+  } else if (name === 'RADIO 09') {
+    result += ellipse(w - 170, 190, 65, 17, '#263e4a');
+    result += path(`M${w - 198} 120 Q${w - 94} 133 ${w - 143} 194 Q${w - 184} 189 ${w - 198} 120Z`, '#86918e', outline, 4);
+    result += path(`M${w - 190} 130 L${w - 147} 166 ${w - 114} 136 M${w - 147} 166 V204`, 'none', '#c0b5a0', 4);
+    result += path(`M${w - 85} 40 V-18 M${w - 115} -8 H${w - 55} M${w - 109} 3 H${w - 61}`, 'none', outline, 7);
+    result += path(`M${w - 85} 40 V-18 M${w - 115} -8 H${w - 55}`, 'none', '#a3a494', 3);
+    result += text(80, h - 48, 'FM', 27, '#e8bc84');
+    result += path(`M${w - 135} ${h - 82} l40 13 -35 17 37 13`, 'none', '#cc927c', 3);
+  } else if (name === 'ALMACÉN') {
+    for (let i = 0; i < 4; i++) {
+      result += path(`M${w - 245 + i * 35} 150 l27 -8 0 88 -27 8Z`, '#728580', '#2c454d', 3);
+      result += path(`M${w - 240 + i * 35} 157 v68`, 'none', '#b4b89d', 2);
+    }
+    for (let j = h - 95; j < h - 36; j += 9) result += path(`M45 ${j} h86 M${w - 134} ${j} h86`, 'none', '#7f7661', 3);
+    result += path(`M25 ${h - 107} H${w - 25} l-15 14 H40Z`, '#a47950', outline, 3);
+    result += text(w - 95, h - 181, '03', 40, '#a89a76');
+  } else {
+    result += rect(w - 245, 175, 150, 72, '#283d4a', 5, outline, 4);
+    result += rect(w - 250, 165, 150, 72, '#4e7a83', 5, '#99b2a4', 3);
+    for (let i = 1; i < 4; i++) result += path(`M${w - 250 + i * 37} 168 v66`, 'none', '#315361', 3);
+    result += path(`M${w - 247} 199 h144`, 'none', '#315361', 3);
+    result += ellipse(w - 96, h - 189, 34, 34, '#344e59', outline, 4);
+    result += path(`M${w - 110} ${h - 205} l25 28 M${w - 111} ${h - 180} l27 -27`, 'none', '#b7c0a4', 8);
+    for (let i = 0; i < 5; i++) result += path(`M${40 + i * 18} ${h - 100} l12 0 -14 23 -12 0Z`, '#c2a765', 'none');
+    result += path(`M${w / 2 - 66} ${h - 101} h132 l-8 8 h-116Z`, '#789a98', outline, 3);
+  }
   result += plant(24, h - 150, .7) + plant(w - 28, 34, .9) + plant(20, 50, .5);
   return result + '</g>';
 }
@@ -206,8 +246,31 @@ save('enemies/brute.svg', svg(136, 140,
   path('M48 39 L60 37 M73 38 L85 40', 'none', '#374c41', 5) +
   ellipse(55, 41, 3, 2, '#f0e3a5') + ellipse(79, 42, 3, 2, '#f0e3a5') +
   path('M56 52 L80 51 76 59 61 60Z', '#465046', outline, 2) + path('M63 53 V57 M72 53 V57', 'none', '#e3dbaf', 2)));
+// Separar el dibujo original en torso/cabeza y extremidades animables.
+for (const kind of ['walker', 'brute']) {
+  let body = readFileSync(`${base}/enemies/${kind}.svg`, 'utf8');
+  const limbPrefixes = kind === 'walker'
+    ? ['M26 77', 'M55 76', 'M24 46', 'M67 47', 'M3 78']
+    : ['M30 94', 'M80 92', 'M28 46', 'M103 46', 'M4 83', 'M15 88'];
+  body = body.replace(/<path d="([^"]*)"[^>]*\/>/g, (whole, d: string) => limbPrefixes.some(prefix => d.startsWith(prefix)) ? '' : whole);
+  save(`enemies/${kind}-body.svg`, body);
+  const heavy = kind === 'brute';
+  save(`enemies/${kind}-arm.svg`, svg(40, 72,
+    path('M12 4 Q25 -1 30 12 L31 41 26 50 10 46 7 20Z', heavy ? '#9aa97b' : '#8fa96d', outline, 3) +
+    path('M9 42 L30 44 33 59 Q28 71 17 66 L8 59Z', heavy ? '#bdc792' : '#aabe7b', outline, 3) +
+    path('M16 49 L18 59 M24 50 L25 60', 'none', '#6c8057', 2) +
+    (heavy ? path('M8 16 L31 17 M8 22 L31 23', 'none', '#786c7b', 5) : path('M8 11 L30 14 29 22 9 20Z', '#94738a', outline, 2))));
+  save(`enemies/${kind}-leg.svg`, svg(34, 43,
+    path('M8 2 L27 3 25 25 9 26Z', heavy ? '#596070' : '#556170', outline, 3) +
+    path('M8 24 Q19 20 27 26 L31 36 Q22 43 5 38 L3 32Z', '#4e5e63', outline, 3) +
+    path('M9 29 L24 30 M7 36 H27', 'none', '#8b998a', 2)));
+}
+save('world/door-exit.svg', svg(96, 116,
+  rect(3, 3, 90, 110, '#263e49', 6, '#7c9890', 4) + rect(11, 11, 74, 100, '#111f2a', 4) +
+  path('M13 13 L34 24 V108 L13 110Z', '#52706b', '#95ac96', 2) +
+  path('M35 25 L76 12 M35 108 L77 109', 'none', '#b2a575', 2)));
 save('vfx/light.svg', svg(512, 512, '<circle cx="256" cy="256" r="256" fill="url(#glow)"/>',
   '<radialGradient id="glow"><stop stop-color="#ffd19a" stop-opacity=".65"/><stop offset=".35" stop-color="#f3a44b" stop-opacity=".26"/><stop offset="1" stop-color="#f3a44b" stop-opacity="0"/></radialGradient>'));
 save('vfx/vignette.svg', svg(1600, 900, '<rect width="1600" height="900" fill="url(#shade)"/>',
   '<radialGradient id="shade" r=".75"><stop offset=".3" stop-color="#10212f" stop-opacity="0"/><stop offset="1" stop-color="#0a1528" stop-opacity=".65"/></radialGradient>'));
-console.log('Arte SVG original generado desde datos de mapa; 10 recursos.');
+console.log('Referencia 02: fachadas con rótulos integrados y extremidades animables.');

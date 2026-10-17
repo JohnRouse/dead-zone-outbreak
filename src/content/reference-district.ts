@@ -14,12 +14,24 @@ export const PROPS = [
 ] as const;
 export const OBSTACLES = [...BUILDINGS, ...PROPS];
 export const LAMPS = [{ x: 1180, y: 860 }, { x: 1700, y: 1320 }, { x: 2020, y: 850 }, { x: 900, y: 1360 }];
-export const WEAPONS = {
-  manual: { damage: 26, interval: .14, speed: 900, range: 760 },
-  auto: { damage: 16, interval: .65, speed: 650, range: 360 },
-} as const;
+// Única definición e instancia para ambos modos; cambio de diseño de iteración 2.
+export const PERSONAL_WEAPON = { damage: 26, interval: .28, speed: 900, range: 760,
+  autoRange: 460, capacity: 10, reloadDuration: 1.5 } as const;
 export const MOVEMENT = { speed: 230, radius: 17, dashMultiplier: 3.9, dashDuration: .19, dashCooldown: 3.3 } as const;
 export const ENEMY_TYPES = {
-  walker: { hp: 60, speed: 66, damage: 12, radius: 19 },
-  brute: { hp: 130, speed: 43, damage: 21, radius: 29 },
+  walker: { hp: 60, speed: 88, damage: 12, radius: 19, windup: .32, strike: .16, recovery: .65, reach: 18, arc: 1.15 },
+  brute: { hp: 156, speed: 56, damage: 28, radius: 29, windup: .9, strike: .24, recovery: 1.3, reach: 62, arc: 1.35 },
 } as const;
+
+export const SPAWN_POINTS = [
+  { id: 'west-edge', x: 65, y: 1100, source: 'edge' },
+  { id: 'east-edge', x: 2735, y: 1100, source: 'edge' },
+  { id: 'north-edge', x: 1450, y: 65, source: 'edge' },
+  { id: 'south-edge', x: 1450, y: 2035, source: 'edge' },
+  { id: 'west-alley', x: 460, y: 1140, source: 'alley' },
+  { id: 'east-alley', x: 2390, y: 1030, source: 'alley' },
+  // Anclaje fuera de la huella sólida, alineado con el umbral de cada fachada.
+  ...BUILDINGS.map((b, i) => ({ id: `door-${i}`, x: b.x + b.w / 2, y: b.y + b.h + 38, source: 'door' as const })),
+] as const;
+export type SpawnPoint = typeof SPAWN_POINTS[number];
+export const SPAWN_RULES = { interval: 1.5, initialDelay: 3, minDistance: 300, maxDistance: 1600, maxAlive: 18 } as const;

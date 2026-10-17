@@ -1,8 +1,10 @@
 import Phaser from 'phaser';
 import { ReferenceSimulation } from '../../simulation/reference';
-import { LAMPS, WORLD } from '../../content/reference-district';
+import { ENEMY_TYPES, LAMPS, WORLD } from '../../content/reference-district';
+import type { ReferenceScenario } from '../../content/reference-scenarios';
 import type { ReferenceState } from '../../core/reference';
 import { ReferenceInput } from '../input/ReferenceInput';
+import { EnemyActor } from './EnemyActor';
 
 interface Actor {
   container: Phaser.GameObjects.Container;
@@ -17,16 +19,16 @@ export interface ReferenceView {
   world: typeof WORLD;
   light: 'night' | 'day';
   renderer: string;
+  scenario: ReferenceScenario;
 }
 const STEP = 1 / 60;
 export class ReferenceScene extends Phaser.Scene {
   onReady?: () => void;
-  private simulation = new ReferenceSimulation();
+  private simulation: ReferenceSimulation;
   private controls!: ReferenceInput;
   private survivor!: Actor;
-  private enemies = new Map<number, Actor>();
+  private enemies = new Map<number, EnemyActor>();
   private graphics!: Phaser.GameObjects.Graphics;
-  private drone!: Phaser.GameObjects.Image;
   private worldArt!: Phaser.GameObjects.Image;
   private vignette!: Phaser.GameObjects.Image;
   private lightPools: Phaser.GameObjects.Image[] = [];
@@ -35,12 +37,16 @@ export class ReferenceScene extends Phaser.Scene {
   private night = true;
   private onView: (view: ReferenceView) => void;
   private hudTimer = 0;
-  constructor(onView: (view: ReferenceView) => void) { super('ReferenceDistrict'); this.onView = onView; }
+  constructor(onView: (view: ReferenceView) => void, private scenario: ReferenceScenario = 'district', private seed = 9231) {
+    super('ReferenceDistrict'); this.onView = onView; this.simulation = new ReferenceSimulation({ scenario, seed });
+  }
   preload() {
     const assets = {
       district: 'world/district.svg', body: 'characters/soldier-body.svg', head: 'characters/soldier-head.svg',
-      boot: 'characters/boot.svg', rifle: 'characters/rifle.svg', drone: 'characters/drone.svg',
-      walker: 'enemies/walker.svg', brute: 'enemies/brute.svg', light: 'vfx/light.svg', vignette: 'vfx/vignette.svg',
+      boot: 'characters/boot.svg', rifle: 'characters/rifle.svg', 'door-exit': 'world/door-exit.svg',
+      light: 'vfx/light.svg', vignette: 'vfx/vignette.svg',
+      'walker-body': 'enemies/walker-body.svg', 'walker-arm': 'enemies/walker-arm.svg', 'walker-leg': 'enemies/walker-leg.svg',
+      'brute-body': 'enemies/brute-body.svg', 'brute-arm': 'enemies/brute-arm.svg', 'brute-leg': 'enemies/brute-leg.svg',
     };
     for (const [key, path] of Object.entries(assets)) this.load.svg(key, `/assets/${path}`);
   }
@@ -58,14 +64,14 @@ export class ReferenceScene extends Phaser.Scene {
     const weapon = this.add.image(8, -34, 'rifle').setOrigin(.24, .5).setScale(.68);
     container.add([shadow, ...boots, body, head, weapon]);
     this.survivor = { container, body, head, weapon, boots };
-    this.drone = this.add.image(1350, 1020, 'drone').setScale(.75).setDepth(2000);
     this.graphics = this.add.graphics().setDepth(3500);
     this.vignette = this.add.image(0, 0, 'vignette').setOrigin(0).setScrollFactor(0).setDepth(5000);
     const camera = this.cameras.main;
     camera.setBounds(0, 0, WORLD.w, WORLD.h);
     camera.startFollow(container, false, .14, .14);
     this.resize();
-    camera.centerOn(1400, 1070);
+    const p = this.simulation.state.player;
+    container.setPosition(p.x, p.y); camera.centerOn(p.x, p.y);
     const canvas = this.game.canvas;
     canvas.tabIndex = 0;
     canvas.setAttribute('aria-label', 'Distrito urbano. WASD o flechas para moverse, mouse y clic para disparar, Espacio o Shift para dash.');
@@ -88,9 +94,11 @@ export class ReferenceScene extends Phaser.Scene {
     this.onView(this.snapshot());
   }
   restart() {
-    this.simulation = new ReferenceSimulation(); this.accumulator = 0;
-    this.cameras.main.centerOn(1400, 1070);
-    this.survivor.container.setPosition(1400, 1070);
+    for (const actor of this.enemies.values()) actor.destroy(); this.enemies.clear();
+    this.simulation = new ReferenceSimulation({ scenario: this.scenario, seed: this.seed }); this.accumulator = 0;
+    const p = this.simulation.state.player;
+    this.cameras.main.centerOn(p.x, p.y);
+    this.survivor.container.setPosition(p.x, p.y);
     this.controls.enable(true); this.started = true; this.game.canvas.focus();
     this.renderState(); this.onView(this.snapshot());
   }
@@ -115,7 +123,7 @@ export class ReferenceScene extends Phaser.Scene {
     const camera = this.cameras.main;
     return { state: this.simulation.snapshot(), world: WORLD, light: this.night ? 'night' : 'day',
       camera: { x: camera.scrollX, y: camera.scrollY, zoom: camera.zoom, width: camera.width / camera.zoom, height: camera.height / camera.zoom },
-      renderer: this.game.renderer.type === Phaser.WEBGL ? 'WebGL' : 'Canvas' };
+      renderer: this.game.renderer.type === Phaser.WEBGL ? 'WebGL' : 'Canvas', scenario: this.scenario };
   }
   update(_time: number, delta: number) {
     if (!this.controls) return;
@@ -127,7 +135,9 @@ export class ReferenceScene extends Phaser.Scene {
       while (this.accumulator >= STEP) {
         // La simulación usa pies en el suelo; las balas se dibujan a 26 u de altura.
         // Compensar esa altura hace que la trayectoria visible alcance la mira.
-        this.simulation.step(this.controls.sample({ x: aim.x, y: aim.y + 26 }), STEP);
+        const visible = this.cameras.main.worldView;
+        this.simulation.step(this.controls.sample({ x: aim.x, y: aim.y + 26 }), STEP,
+          { x: visible.x, y: visible.y, w: visible.width, h: visible.height });
         this.accumulator -= STEP;
       }
     }
@@ -145,12 +155,11 @@ export class ReferenceScene extends Phaser.Scene {
     const facing = Math.cos(p.angle) < 0 ? -1 : 1;
     this.survivor.body.setY(12 + bob).setScale(.8 * facing, .8);
     this.survivor.head!.setY(12 + bob).setScale(.8 * facing, .8);
-    this.survivor.boots!.forEach((boot, i) => boot.setY(1 + (walk ? Math.sin(t * 17 + i * Math.PI) * 6 : 0)));
-    const shooting = s.events.some(e => e.kind === 'manual' && t - e.time < .08);
+    this.survivor.boots!.forEach((boot, i) => boot.setY(1 - (walk ? Math.max(0, Math.sin(t * 17 + i * Math.PI)) * 4 : 0)));
+    const shooting = s.events.some(e => (e.kind === 'manual' || e.kind === 'auto') && t - e.time < .08);
     this.survivor.weapon!.setRotation(p.angle).setPosition(8 - (shooting ? Math.cos(p.angle) * 5 : 0), -34 + bob);
     this.survivor.weapon!.setFlipY(facing < 0);
     this.survivor.container.setAlpha(p.invulnerable > .25 ? .65 + Math.sin(t * 45) * .25 : 1);
-    this.drone.setPosition(p.x - 43, p.y - 58 + Math.sin(t * 4) * 4).setRotation(Math.sin(t * 2) * .06).setDepth(p.y + 1);
     g.lineStyle(2, 0x99d4c3, .65).strokeEllipse(p.x, p.y + 2, 52, 21);
     if (p.dashTime > 0) {
       for (let i = 1; i < 4; i++) g.lineStyle(4 - i, 0x8bdfd0, .5 / i)
@@ -158,34 +167,30 @@ export class ReferenceScene extends Phaser.Scene {
           p.x - p.dashX * (24 * i + 24), p.y - p.dashY * (24 * i + 24));
     }
     for (const [id, actor] of this.enemies) {
-      if (!s.enemies.some(enemy => enemy.id === id)) { actor.container.destroy(); this.enemies.delete(id); }
+      if (!s.enemies.some(enemy => enemy.id === id)) { actor.destroy(); this.enemies.delete(id); }
     }
     for (const e of s.enemies) {
       let actor = this.enemies.get(e.id);
       if (!actor) {
-        const container = this.add.container(e.x, e.y);
-        const shadow = this.add.ellipse(0, 1, e.radius * 2.5, e.radius, 0x0b202d, .65);
-        const body = this.add.image(0, 4, e.kind).setOrigin(.5, 1).setScale(.78);
-        container.add([shadow, body]); actor = { container, body }; this.enemies.set(e.id, actor);
+        actor = new EnemyActor(this, e); this.enemies.set(e.id, actor);
       }
-      actor.container.setPosition(e.x, e.y).setDepth(e.y);
-      const scaleX = Math.cos(e.angle) < 0 ? -.78 : .78;
-      const sway = Math.sin(t * (e.kind === 'brute' ? 5 : 8) + e.id);
-      actor.body.setScale(scaleX, .78).setY(4 + sway * 1.8).setRotation(sway * .025);
-      if (e.hit > 0) actor.body.setTint(0xffdba4); else actor.body.clearTint();
-      if (e.attack > 0) {
-        g.lineStyle(3, 0xf5a860, .9).strokeCircle(e.x, e.y, e.radius + 13);
-        g.fillStyle(0xe65d40, .18).fillCircle(e.x, e.y, e.radius + 13);
+      actor.update(e);
+      if (e.phase === 'windup' || e.phase === 'strike') {
+        const reach = e.radius + 17 + ENEMY_TYPES[e.kind].reach;
+        const arc = ENEMY_TYPES[e.kind].arc;
+        g.fillStyle(e.phase === 'strike' ? 0xf3c27d : 0xe65d40, e.phase === 'strike' ? .35 : .13);
+        g.beginPath().slice(e.x, e.y, reach, e.attackAngle - arc, e.attackAngle + arc, false).fillPath();
+        g.lineStyle(2, 0xf5a860, .85).beginPath().arc(e.x, e.y, reach, e.attackAngle - arc, e.attackAngle + arc).strokePath();
       }
       if (e.hit > 0) {
-        const maxhp = e.kind === 'brute' ? 130 : 60;
+        const maxhp = ENEMY_TYPES[e.kind].hp;
         g.fillStyle(0x172b35, .9).fillRoundedRect(e.x - 23, e.y - (e.kind === 'brute' ? 111 : 88), 46, 5, 2);
-        g.fillStyle(0xd6b97b, 1).fillRoundedRect(e.x - 23, e.y - (e.kind === 'brute' ? 111 : 88), 46 * e.hp / maxhp, 5, 2);
+        g.fillStyle(0xd6b97b, 1).fillRoundedRect(e.x - 23, e.y - (e.kind === 'brute' ? 111 : 88), 46 * Math.min(1, e.hp / maxhp), 5, 2);
       }
     }
     for (const b of s.projectiles) {
       const angle = Math.atan2(b.vy, b.vx);
-      g.lineStyle(3, b.auto ? 0x88e1cb : 0xffd68d, .9)
+      g.lineStyle(3, 0xffd68d, .9)
         .lineBetween(b.x, b.y - 26, b.x - Math.cos(angle) * 17, b.y - 26 - Math.sin(angle) * 17);
       g.fillStyle(0xfff2c9, 1).fillCircle(b.x, b.y - 26, 2);
     }
@@ -194,7 +199,7 @@ export class ReferenceScene extends Phaser.Scene {
       if (event.kind === 'manual' || event.kind === 'auto') {
         if (age > .065) continue;
         const x = event.x + Math.cos(event.angle) * 47, y = event.y - 32 + Math.sin(event.angle) * 47;
-        g.fillStyle(event.kind === 'auto' ? 0x92e9d9 : 0xffd58b, .85).fillCircle(x, y, 8 - age * 60);
+        g.fillStyle(0xffd58b, .85).fillCircle(x, y, 8 - age * 60);
         g.lineStyle(2, 0xffebbd, .8).lineBetween(x - 10, y, x + 10, y);
       } else {
         g.lineStyle(2, event.kind === 'hurt' ? 0xef8b74 : 0xd1df9a, Math.max(0, 1 - age * 4));
