@@ -66,3 +66,5 @@ Se revisaron ambas capturas: jugadores y clases legibles, diferencia visible ent
 - Capturas de lobby en Chromium de escritorio; todavía no se verificaron diseño estrecho de esta interfaz, accesibilidad con lector de pantalla, WebKit/Firefox ni CI remota.
 
 El [diseño técnico](diseno-multijugador.md) ordena la evolución: cuentas/equipos PostgreSQL → simulación y Phaser paralelo → cronómetro/validación → rankings → resiliencia y operación. Ninguna de estas fases se presenta como completada por el funcionamiento del lobby.
+
+Actualización posterior: se configuró la identidad Git local y se guardaron ambos encargos en commits separados. Este documento conserva el resultado de la sesión original; las comprobaciones de organización, incluida una intermitencia de la suite legacy, se registran en [Organización de entregas](organizacion-entregas.md).

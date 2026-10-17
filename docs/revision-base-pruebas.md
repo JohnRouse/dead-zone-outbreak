@@ -44,3 +44,5 @@ Las pruebas controladas de daño/mejoras preparan objetivos o XP; no certifican 
 El plan propone contratos y simulación TypeScript sin DOM, cliente Phaser paralelo, paridad de controles/combate/misión, arte original, medición de dificultad y posterior transporte Colyseus. No se reemplaza el juego ni se añade red en esta entrega.
 
 Rama local: `test/legacy-playwright-baseline`. Cambios preparados para revisión local, sin merge en `main` ni publicación de PR remota. La identidad Git local no está configurada; no se inventa un autor para crear un commit. El texto de este archivo sirve como descripción propuesta de la PR.
+
+Actualización posterior: ambos encargos se guardaron en commits separados dentro de `feat/colyseus-character-lobby`, conservando este registro de la primera entrega. La identidad local, las comprobaciones nuevas y el fallo intermitente detectado se detallan en [Organización de entregas](organizacion-entregas.md).
