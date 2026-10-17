@@ -5,14 +5,8 @@ import type { ReferenceScenario } from '../../content/reference-scenarios';
 import type { ReferenceState } from '../../core/reference';
 import { ReferenceInput } from '../input/ReferenceInput';
 import { EnemyActor } from './EnemyActor';
-
-interface Actor {
-  container: Phaser.GameObjects.Container;
-  body: Phaser.GameObjects.Image;
-  head?: Phaser.GameObjects.Image;
-  boots?: Phaser.GameObjects.Image[];
-  weapon?: Phaser.GameObjects.Image;
-}
+import { SurvivorActor } from './SurvivorActor';
+import { CombatEffects } from './CombatEffects';
 export interface ReferenceView {
   state: ReferenceState;
   camera: { x: number; y: number; zoom: number; width: number; height: number };
@@ -26,9 +20,10 @@ export class ReferenceScene extends Phaser.Scene {
   onReady?: () => void;
   private simulation: ReferenceSimulation;
   private controls!: ReferenceInput;
-  private survivor!: Actor;
+  private survivor!: SurvivorActor;
   private enemies = new Map<number, EnemyActor>();
   private graphics!: Phaser.GameObjects.Graphics;
+  private combatEffects!: CombatEffects;
   private worldArt!: Phaser.GameObjects.Image;
   private vignette!: Phaser.GameObjects.Image;
   private lightPools: Phaser.GameObjects.Image[] = [];
@@ -42,29 +37,33 @@ export class ReferenceScene extends Phaser.Scene {
   }
   preload() {
     const assets = {
-      district: 'world/district.svg', body: 'characters/soldier-body.svg', head: 'characters/soldier-head.svg',
-      boot: 'characters/boot.svg', rifle: 'characters/rifle.svg', 'door-exit': 'world/door-exit.svg',
+      district: 'world/painted-v3/district.svg', 'rifle-v3': 'characters/painted-v3/rifle.svg', 'door-exit': 'world/door-exit.svg',
       light: 'vfx/light.svg', vignette: 'vfx/vignette.svg',
-      'walker-body': 'enemies/walker-body.svg', 'walker-arm': 'enemies/walker-arm.svg', 'walker-leg': 'enemies/walker-leg.svg',
-      'brute-body': 'enemies/brute-body.svg', 'brute-arm': 'enemies/brute-arm.svg', 'brute-leg': 'enemies/brute-leg.svg',
+      'contact-shadow': 'vfx/painted-v3/contact-shadow.svg', 'muzzle-v3': 'vfx/painted-v3/muzzle.svg',
     };
     for (const [key, path] of Object.entries(assets)) this.load.svg(key, `/assets/${path}`);
+    this.load.atlas('painted-source', '/assets/characters/painted-v3/survivor-infected-atlas.png', '/assets/characters/painted-v3/atlas.json');
   }
   create() {
+    // Backing POT para mipmaps: evita que el detalle pintado parpadee al reducir
+    // los recortes. El PNG original y sus coordenadas se conservan intactos.
+    const source = this.textures.get('painted-source');
+    const atlas = this.textures.createCanvas('painted-actors', 2048, 2048)!;
+    atlas.context.drawImage(source.getSourceImage() as HTMLImageElement, 0, 0);
+    for (const name of source.getFrameNames()) {
+      const frame = source.get(name);
+      atlas.add(name, 0, frame.cutX, frame.cutY, frame.cutWidth, frame.cutHeight);
+    }
+    atlas.refresh(); this.textures.remove('painted-source');
     this.worldArt = this.add.image(0, 0, 'district').setOrigin(0).setDepth(-10);
     for (const lamp of LAMPS) {
       this.lightPools.push(this.add.image(lamp.x + 35, lamp.y - 8, 'light').setDisplaySize(480, 340).setDepth(-5).setBlendMode(Phaser.BlendModes.SCREEN));
       this.lightPools.push(this.add.image(lamp.x + 48, lamp.y - 108, 'light').setDisplaySize(130, 95).setDepth(4000).setAlpha(.7).setBlendMode(Phaser.BlendModes.SCREEN));
     }
-    const container = this.add.container(1400, 1070);
-    const shadow = this.add.ellipse(0, 2, 48, 20, 0x0b202d, .65);
-    const boots = [-11, 11].map(x => this.add.image(x, 1, 'boot').setOrigin(.5, 1).setScale(.58));
-    const body = this.add.image(0, 12, 'body').setOrigin(.5, 1).setScale(.8);
-    const head = this.add.image(0, 12, 'head').setOrigin(.5, 1).setScale(.8);
-    const weapon = this.add.image(8, -34, 'rifle').setOrigin(.24, .5).setScale(.68);
-    container.add([shadow, ...boots, body, head, weapon]);
-    this.survivor = { container, body, head, weapon, boots };
+    this.survivor = new SurvivorActor(this);
+    const container = this.survivor.container;
     this.graphics = this.add.graphics().setDepth(3500);
+    this.combatEffects = new CombatEffects(this);
     this.vignette = this.add.image(0, 0, 'vignette').setOrigin(0).setScrollFactor(0).setDepth(5000);
     const camera = this.cameras.main;
     camera.setBounds(0, 0, WORLD.w, WORLD.h);
@@ -150,17 +149,8 @@ export class ReferenceScene extends Phaser.Scene {
     const g = this.graphics;
     g.clear();
     this.survivor.container.setPosition(p.x, p.y).setDepth(p.y);
-    const walk = p.moving || p.dashTime > 0;
-    const bob = walk ? Math.sin(t * 17) * 2 : Math.sin(t * 3) * .7;
-    const facing = Math.cos(p.angle) < 0 ? -1 : 1;
-    this.survivor.body.setY(12 + bob).setScale(.8 * facing, .8);
-    this.survivor.head!.setY(12 + bob).setScale(.8 * facing, .8);
-    this.survivor.boots!.forEach((boot, i) => boot.setY(1 - (walk ? Math.max(0, Math.sin(t * 17 + i * Math.PI)) * 4 : 0)));
-    const shooting = s.events.some(e => (e.kind === 'manual' || e.kind === 'auto') && t - e.time < .08);
-    this.survivor.weapon!.setRotation(p.angle).setPosition(8 - (shooting ? Math.cos(p.angle) * 5 : 0), -34 + bob);
-    this.survivor.weapon!.setFlipY(facing < 0);
-    this.survivor.container.setAlpha(p.invulnerable > .25 ? .65 + Math.sin(t * 45) * .25 : 1);
-    g.lineStyle(2, 0x99d4c3, .65).strokeEllipse(p.x, p.y + 2, 52, 21);
+    this.survivor.update(s);
+    g.lineStyle(1.5, 0xc1cba8, .35).strokeEllipse(p.x, p.y + 2, 55, 20);
     if (p.dashTime > 0) {
       for (let i = 1; i < 4; i++) g.lineStyle(4 - i, 0x8bdfd0, .5 / i)
         .lineBetween(p.x - p.dashX * 24 * i, p.y - p.dashY * 24 * i,
@@ -184,32 +174,11 @@ export class ReferenceScene extends Phaser.Scene {
       }
       if (e.hit > 0) {
         const maxhp = ENEMY_TYPES[e.kind].hp;
-        g.fillStyle(0x172b35, .9).fillRoundedRect(e.x - 23, e.y - (e.kind === 'brute' ? 111 : 88), 46, 5, 2);
-        g.fillStyle(0xd6b97b, 1).fillRoundedRect(e.x - 23, e.y - (e.kind === 'brute' ? 111 : 88), 46 * Math.min(1, e.hp / maxhp), 5, 2);
+        g.fillStyle(0x172b35, .9).fillRoundedRect(e.x - 23, e.y - (e.kind === 'brute' ? 120 : 96), 46, 5, 2);
+        g.fillStyle(0xd6b97b, 1).fillRoundedRect(e.x - 23, e.y - (e.kind === 'brute' ? 120 : 96), 46 * Math.min(1, e.hp / maxhp), 5, 2);
       }
     }
-    for (const b of s.projectiles) {
-      const angle = Math.atan2(b.vy, b.vx);
-      g.lineStyle(3, 0xffd68d, .9)
-        .lineBetween(b.x, b.y - 26, b.x - Math.cos(angle) * 17, b.y - 26 - Math.sin(angle) * 17);
-      g.fillStyle(0xfff2c9, 1).fillCircle(b.x, b.y - 26, 2);
-    }
-    for (const event of s.events) {
-      const age = t - event.time;
-      if (event.kind === 'manual' || event.kind === 'auto') {
-        if (age > .065) continue;
-        const x = event.x + Math.cos(event.angle) * 47, y = event.y - 32 + Math.sin(event.angle) * 47;
-        g.fillStyle(0xffd58b, .85).fillCircle(x, y, 8 - age * 60);
-        g.lineStyle(2, 0xffebbd, .8).lineBetween(x - 10, y, x + 10, y);
-      } else {
-        g.lineStyle(2, event.kind === 'hurt' ? 0xef8b74 : 0xd1df9a, Math.max(0, 1 - age * 4));
-        for (let i = 0; i < 5; i++) {
-          const angle = i * Math.PI * .4 + event.id;
-          g.lineBetween(event.x + Math.cos(angle) * age * 65, event.y - 28 + Math.sin(angle) * age * 65,
-            event.x + Math.cos(angle) * (age * 65 + 5), event.y - 28 + Math.sin(angle) * (age * 65 + 5));
-        }
-      }
-    }
+    this.combatEffects.draw(s, g);
     if (this.started) {
       const pointer = this.input.activePointer;
       const target = this.cameras.main.getWorldPoint(pointer.x, pointer.y);

@@ -23,7 +23,7 @@ export function renderReference(root: HTMLDivElement) {
         <div class="reference-controls"><span><kbd>WASD</kbd> / flechas · mover</span><span><kbd>CLIC</kbd> sostenido · disparar</span><span><kbd>ESPACIO</kbd> / Shift · dash</span><span><kbd>P</kbd> pausa</span></div>
         <div class="reference-weapons reference-plate"><span class="reference-eyebrow">ARMA PERSONAL · <b id="reference-fire-mode">AUTO</b></span><strong>Fusil <span id="reference-ammo">10 / 10</span></strong><div class="reference-dash"><span id="reference-dash-text">DASH LISTO</span><i><b id="reference-dash-bar"></b></i></div></div>
       </footer>
-      <div class="reference-overlay" id="reference-intro"><section class="reference-dialog"><span class="reference-eyebrow">DEAD ZONE: OUTBREAK / ITERACIÓN 02</span><h1>La ciudad aún<br><em>tiene pulso.</em></h1><p>Asfalto húmedo. Luces de emergencia.<br>Algo se mueve al otro lado de la calle.</p><div class="reference-intro-controls"><b>WASD / flechas</b> para moverte<br><b>Sin clic:</b> tu fusil apunta y dispara automáticamente<br><b>Clic sostenido:</b> tú diriges esa misma arma<br>Un cargador compartido; la recarga es automática.<br><b>Espacio / Shift</b> para dash · <b>P</b> para pausa</div><button class="reference-primary" id="reference-enter" disabled>Cargando distrito…</button><small>Una escena jugable para revisar arte y combate.<br>Interiores, progresión y cooperación en etapas posteriores.</small></section></div>
+      <div class="reference-overlay" id="reference-intro"><section class="reference-dialog"><span class="reference-eyebrow">DEAD ZONE: OUTBREAK / ESTUDIO VISUAL 03</span><h1>La ciudad aún<br><em>tiene pulso.</em></h1><p>Asfalto húmedo. Luces de emergencia.<br>Algo se mueve al otro lado de la calle.</p><div class="reference-intro-controls"><b>WASD / flechas</b> para moverte<br><b>Sin clic:</b> tu fusil apunta y dispara automáticamente<br><b>Clic sostenido:</b> tú diriges esa misma arma<br>Un cargador compartido; la recarga es automática.<br><b>Espacio / Shift</b> para dash · <b>P</b> para pausa</div><button class="reference-primary" id="reference-enter" disabled>Cargando distrito…</button><small>Una escena jugable para revisar arte y combate.<br>Interiores, progresión y cooperación en etapas posteriores.</small></section></div>
       <div class="reference-overlay" id="reference-modal" hidden><section class="reference-dialog reference-pause-dialog"><span class="reference-eyebrow" id="reference-modal-kicker">PAUSA LOCAL</span><h2 id="reference-modal-title">Un respiro.</h2><p id="reference-modal-copy">El distrito puede esperar.</p><button class="reference-primary" id="reference-resume">Continuar</button><button id="reference-restart">Reiniciar escena</button></section></div>
     </div>`;
   const get = <T extends HTMLElement = HTMLElement>(id: string) => root.querySelector<T>(`#${id}`)!;
@@ -68,7 +68,7 @@ export function renderReference(root: HTMLDivElement) {
   const game = new Phaser.Game({
     type: Phaser.AUTO, parent: 'reference-canvas', backgroundColor: '#243d4d',
     scale: { mode: Phaser.Scale.RESIZE, width: window.innerWidth, height: window.innerHeight },
-    render: { antialias: true, pixelArt: false, roundPixels: false },
+    render: { antialias: true, pixelArt: false, roundPixels: false, mipmapFilter: 'LINEAR_MIPMAP_LINEAR' },
     scene: [scene], audio: { noAudio: true }, banner: false,
   });
   get('reference-enter').addEventListener('click', () => {

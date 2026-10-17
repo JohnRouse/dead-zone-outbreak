@@ -2,7 +2,7 @@
 // Usar con Vite iniciado: npm run record:reference
 import { chromium } from '@playwright/test';
 import { mkdir, writeFile } from 'node:fs/promises';
-const directory = 'test-results/reference-iteration-2';
+const directory = process.env.REFERENCE_OUTPUT ?? 'test-results/reference-iteration-3';
 await mkdir(directory, { recursive: true });
 const browser = await chromium.launch();
 const context = await browser.newContext({ viewport: { width: 1280, height: 720 },

@@ -1,0 +1,252 @@
+{
+  "frames": {
+    "survivor-body": {
+      "frame": {
+        "x": 35,
+        "y": 12,
+        "w": 348,
+        "h": 386
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 348,
+        "h": 386
+      },
+      "sourceSize": {
+        "w": 348,
+        "h": 386
+      }
+    },
+    "survivor-left-arm": {
+      "frame": {
+        "x": 479,
+        "y": 29,
+        "w": 126,
+        "h": 361
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 126,
+        "h": 361
+      },
+      "sourceSize": {
+        "w": 126,
+        "h": 361
+      }
+    },
+    "survivor-right-arm": {
+      "frame": {
+        "x": 717,
+        "y": 22,
+        "w": 220,
+        "h": 368
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 220,
+        "h": 368
+      },
+      "sourceSize": {
+        "w": 220,
+        "h": 368
+      }
+    },
+    "survivor-leg": {
+      "frame": {
+        "x": 1027,
+        "y": 7,
+        "w": 141,
+        "h": 389
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 141,
+        "h": 389
+      },
+      "sourceSize": {
+        "w": 141,
+        "h": 389
+      }
+    },
+    "walker-body": {
+      "frame": {
+        "x": 44,
+        "y": 408,
+        "w": 338,
+        "h": 390
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 338,
+        "h": 390
+      },
+      "sourceSize": {
+        "w": 338,
+        "h": 390
+      }
+    },
+    "walker-left-arm": {
+      "frame": {
+        "x": 482,
+        "y": 422,
+        "w": 138,
+        "h": 367
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 138,
+        "h": 367
+      },
+      "sourceSize": {
+        "w": 138,
+        "h": 367
+      }
+    },
+    "walker-right-arm": {
+      "frame": {
+        "x": 735,
+        "y": 421,
+        "w": 130,
+        "h": 375
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 130,
+        "h": 375
+      },
+      "sourceSize": {
+        "w": 130,
+        "h": 375
+      }
+    },
+    "walker-leg": {
+      "frame": {
+        "x": 1043,
+        "y": 410,
+        "w": 134,
+        "h": 383
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 134,
+        "h": 383
+      },
+      "sourceSize": {
+        "w": 134,
+        "h": 383
+      }
+    },
+    "brute-body": {
+      "frame": {
+        "x": 7,
+        "y": 798,
+        "w": 471,
+        "h": 432
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 471,
+        "h": 432
+      },
+      "sourceSize": {
+        "w": 471,
+        "h": 432
+      }
+    },
+    "brute-left-arm": {
+      "frame": {
+        "x": 478,
+        "y": 809,
+        "w": 196,
+        "h": 408
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 196,
+        "h": 408
+      },
+      "sourceSize": {
+        "w": 196,
+        "h": 408
+      }
+    },
+    "brute-right-arm": {
+      "frame": {
+        "x": 718,
+        "y": 812,
+        "w": 234,
+        "h": 412
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 234,
+        "h": 412
+      },
+      "sourceSize": {
+        "w": 234,
+        "h": 412
+      }
+    },
+    "brute-leg": {
+      "frame": {
+        "x": 1021,
+        "y": 798,
+        "w": 212,
+        "h": 431
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 212,
+        "h": 431
+      },
+      "sourceSize": {
+        "w": 212,
+        "h": 431
+      }
+    }
+  },
+  "meta": {
+    "image": "survivor-infected-atlas.png",
+    "size": {
+      "w": 1254,
+      "h": 1254
+    },
+    "scale": "1"
+  }
+}
