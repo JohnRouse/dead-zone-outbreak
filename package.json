@@ -10,9 +10,10 @@
     "preview": "vite preview",
     "test": "npm run test:simulation && npm run test:server && npm run test:e2e",
     "test:simulation": "tsx --test src/simulation/*.test.ts",
-    "art:reference": "tsx scripts/reference-art.ts",
+    "art:reference": "tsx scripts/reference-art.ts && tsx scripts/painted-reference-art.ts",
     "measure:reference": "tsx scripts/measure-reference.ts",
     "record:reference": "node scripts/record-reference.mjs",
+    "review:art": "node scripts/art-review.mjs",
     "test:server": "tsx --test server/tests/*.test.ts",
     "test:e2e": "playwright test",
     "test:ui": "playwright test --ui"

@@ -1,4 +1,24 @@
-# Biblioteca original · referencia 02
+# Biblioteca original · referencia 03
+
+La escena actual carga el conjunto `painted-v3`. La referencia 02 descrita más abajo se conserva íntegra. El conjunto nuevo combina tres PNG originales generados con la herramienta integrada imagegen y recursos nativos SVG/Phaser. [Prompts exactos y procedencia](../../docs/iteracion-3-prompts.md). La calidad artística sigue pendiente de revisión humana.
+
+| Recurso actual | Fuente / resolución | Presentación y uso |
+| --- | --- | --- |
+| `characters/painted-v3/survivor-infected-atlas.png` | PNG RGBA 1254 × 1254 | Tres personajes con torso/cabeza, dos brazos y una pierna reutilizada. `atlas.json` define los doce recortes. No hay cambios de hitboxes. |
+| `characters/painted-v3/rifle.svg` | SVG original 130 × 43 | Fusil y manos, 70 × 25 unidades de mundo, origen (.24,.5), Y=-30; orientación continua y retroceso en ambos modos. |
+| `world/painted-v3/material-atlas.png` | PNG 1254 × 1254 | Cuatro materiales: asfalto, mampostería, chapa y hormigón. Original incrustado en patrones del SVG del distrito. |
+| `world/painted-v3/props-atlas.png` | PNG RGBA 1254 × 1254 | Dos coches, una barricada y un arbusto. Recortes en `props-atlas.json`; las instancias mantienen huellas y posiciones anteriores. |
+| `world/painted-v3/district.svg` | Composición SVG 2800 × 2100 | Originales PNG incrustados, fachadas y detalles SVG. Reutiliza la geometría de referencia 02; no añade mapa ni interiores. |
+| `vfx/painted-v3/contact-shadow.svg` | SVG original 128 × 64 | Sombra radial suave anclada a pies/cadáveres. |
+| `vfx/painted-v3/muzzle.svg` | SVG original 96 × 64 | Destello cálido de hasta 0.06 s, instanciado desde eventos del arma existente. |
+
+Integración: `scripts/painted-reference-art.ts`, mediante `npm run art:reference`. Los PNG seleccionados se guardan sin retoque. `scripts/atlas-frames.mjs` calcula únicamente metadatos de alfa, con Vite en 5173. El atlas se copia sin reescalado a un respaldo de textura 2048 × 2048 en ejecución para permitir mipmaps y reducir ruido al alejarse. La cámara conserva escala, encuadre y seguimiento de la referencia 02.
+
+Protagonista: torso 63 × 66, Y=-20, piernas 14 × 31; caminante: 49 × 62, Y=-18, piernas 13 × 29; pesado: 89 × 80, Y=-23, piernas 22 × 36. Brazos articulados y marcha con pies alternos; caída y salida por puertas mantienen los estados anteriores. Datos de presentación en `src/client/phaser/PaintedActor.ts`. Los círculos de colisión siguen siendo R17, R19 y R29.
+
+Proyectil: cola exterior tenue de 26 u, núcleo de 18 u, punta luminosa y trazo fino. Impactos de hasta 0.18 s, cinco fragmentos en infectados o tres en superficies; destello del torso con alfa máximo .28. No añade proyectiles, daño, físicas ni partículas persistentes. Los materiales pintados y las luces dibujadas no constituyen iluminación física ni mapas de normales.
+
+## Conjunto conservado · referencia 02
 
 Arte SVG original creado para DEAD ZONE: OUTBREAK por Codex en este repositorio, 2026-10-17. Sin imágenes, sprites, fuentes ni trazados extraídos de juegos comerciales. Su uso sigue las condiciones del código del proyecto; no se declara una licencia de terceros ni una licencia nueva para el repositorio. La dirección visual está **pendiente de aprobación humana**.
 
