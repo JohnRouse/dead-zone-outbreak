@@ -16,6 +16,7 @@ Desarrollar un juego 2D de zombis para navegador con combate híbrido y futura c
 - No eliminar funcionalidades existentes sin documentar el motivo y consultar antes de cambios irreversibles.
 - Combate: **una sola arma personal** con apuntado manual/automático y misma cadencia/munición, sin duplicaciones. Evoluciones (triple, láser, ráfaga y perforación) deben diferenciarse visualmente; estructuras defensivas tienen armas independientes.
 - La dificultad no debe volverse trivial después de subir de nivel: medir daño recibido, presión de hordas y capacidad de supervivencia.
+- **Dirección confirmada de zombis:** infectados comunes rápidos, agresivos y perseguidores, con presión de grupo al estilo de ritmo de *Guerra Mundial Z*, NO hordas básicas lentas y pasivas. Variantes pesadas pueden ser más lentas sin perder agresividad. Señalizar ataques, evitar daño inevitable y medir capacidad de respuesta/dificultad; consultar `docs/biblia-visual-diseno.md` y `docs/universo-lore-personajes.md`. No cambiar mecánicas en un encargo solo documental.
 - Escenario explorable, mayor que la pantalla; cámara siguiendo al personaje, colisiones coherentes y puntos de interés.
 - Arte 2D **ilustrado, NO pixel art**, original y consistente; estética colorida pero sombría, top-down, sombras e iluminación expresiva. Evitar sprites geométricos provisionales como versión final y no usar assets de juegos comerciales sin licencia.
 - Diseñar módulos independientes para habilitar en el futuro servidor autoritativo y cooperativo de 1–4 jugadores.
