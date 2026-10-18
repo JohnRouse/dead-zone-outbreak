@@ -59,7 +59,19 @@ El objetivo propuesto es una **habilidad activa especial** y una **especializaci
 
 **Reglas:** todos conservan movimiento, apuntado, disparo, dash, construcción básica, rescate e interacción; ninguna misión debe exigir obligatoriamente una clase. Los tiempos, daños, alcance, consumo de recursos, enfriamientos, mejoras y efectos deben equilibrarse y aprobarse con pruebas, especialmente para rankings. Habilidades jugables ≠ cosméticos comprables. Es posible añadir más personajes en el futuro, pero sin ampliar el catálogo antes de equilibrar los cuatro actuales.
 
-## 5. Estado del canon y criterios de publicación
+## 5. Naturaleza y conducta de los infectados — COMPORTAMIENTO CONFIRMADO
+
+**CONFIRMADO:** los zombis de DEAD ZONE deben sentirse **agresivos y rápidos**, capaces de acosar, acelerar y lanzarse contra supervivientes con gran presión grupal, siguiendo como **referente emocional** el ritmo de los infectados de *Guerra Mundial Z*, **no** el estereotipo principal de caminantes lentos/pasivos de *The Walking Dead*. Inspiración de tensión, nunca reproducción de diseño, secuencias o propiedad intelectual.
+
+- El infectado común no será un «caminante lento» de base. Puede estar quieto o distraído antes de detectar a una víctima, pero la persecución es rápida y amenazante.
+- Crear variedad por comportamiento: comunes agresivos, velocistas, pesados que rompen barreras, y futuros especiales. Un pesado puede ser menos veloz, **pero no pasivo**; su amenaza viene del daño, presión y capacidad de romper cobertura.
+- Las hordas crean tensión por persecución y rutas, **sin** implementar ataques sin aviso, colisiones falsas o aparición instantánea sobre los jugadores. La fortificación y el trabajo en equipo deben ser tácticas útiles.
+- No atribuir oficialmente a infección un agente, corporación, transmisión o mutación concretos hasta aprobar el origen definitivo del brote.
+- En el sitio web, la sección «Facciones e infectados» detallará estos comportamientos y, cuando se apruebe, el origen narrativo y las variantes.
+
+**PENDIENTE:** origen biológico/social de los infectados, reglas narrativas de transmisión, capacidades exactas de escalada/apilamiento, catálogo definitivo y cifras de velocidad, daño, detección y densidad. La implementación de IA corresponde a fases futuras de combate, no a la corrección visual V4.1.
+
+## 6. Estado del canon y criterios de publicación
 
 **CONFIRMADO:** mundo zombi posapocalíptico; dos modos principales (Supervivencia y Campaña); cuatro clases; «Aguas tenebrosas» como campaña de cuatro mapas; lore y biografías completas accesibles desde la web al inicio; arte ilustrado V4.
 
