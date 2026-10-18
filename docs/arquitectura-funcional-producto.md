@@ -104,6 +104,9 @@ Misiones recompensadas jugando podrán entregar fichas, objetos y eventualmente 
 
 ## 8. UI/UX: la identidad visual aplica a TODO el producto
 
+**Acceso público confirmado al lore:** incluso sin registrarse, el visitante podrá abrir desde la web «Universo/Historia» y consultar desde el inicio el origen completo del apocalipsis, cronología y las biografías completas de los personajes. No habrá capítulos de lore obligatorio bloqueados detrás de campañas, logros, compras o inicio de sesión. La narrativa y habilidades concretas están pendientes de aprobación editorial. Consultar [Universo, lore y protagonistas](universo-lore-personajes.md).
+
+
 **CONFIRMADO:** bienvenida, registro, recuperación de cuenta, perfil, inventario de cuenta, mochila dentro del juego, Arsenal, Armario, tienda, centro de misiones, selección de campaña, buscador de salas, lobby, selección de personaje, resultados y ranking deben **compartir el lenguaje gráfico aprobado**: ilustración 2D pintada, personajes caricaturescos, contorno orgánico, formas en capas, color vivo con penumbra, luces cálidas/locales y fondos narrativos.
 
 Evitar interfaz genérica de «tarjetas rectangulares negras», textos diminutos, saturación de banners, demasiadas monedas, adornos que tapen la lectura o replicar la pantalla de otro juego.
@@ -151,6 +154,9 @@ Evitar interfaz genérica de «tarjetas rectangulares negras», textos diminutos
 - **Android futuro:** reutilizar motor/web en empaquetado cuando controles táctiles, rendimiento móvil, escalado UI, políticas de tienda y compatibilidad crossplay se hayan validado; no asumir que la web actual está optimizada para móviles.
 
 ## 11. Plan de implementación sin romper avances visuales
+
+**Nueva dependencia editorial:** antes de mostrar el texto definitivo de la sección «Universo» en la web, aprobar historia oficial del brote, línea de tiempo y pasado de las cuatro clases. Es válido avanzar una maqueta navegable de interfaz sin publicar contenido inventado como canon. Las habilidades especiales son propuestas a equilibrar, no tareas aprobadas para esta fase.
+
 
 1. **Documentar (esta entrega):** actualizar biblia visual, crear arquitectura funcional, incorporar referencia a AGENTS/README. Sin mutar código ni migraciones.
 2. **Cerrar dirección visual V4/V4.1:** perspectiva, oclusión y cámara pendientes de revisión humana, independiente de la documentación.
