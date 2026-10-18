@@ -6,6 +6,7 @@
 - Para cambios de inventario, tiendas, menús, cuentas, campaña, salas y base de datos, leer también [`docs/arquitectura-funcional-producto.md`](docs/arquitectura-funcional-producto.md). Respetar sus etiquetas CONFIRMADO/PROPUESTA/PENDIENTE.
 - No implementar gacha de pago, monedas para tiradas ni compras aleatorias mientras no exista revisión legal y autorización explícita. No implementar persistencia de armas físicas entre campañas: solo cosméticos son permanentes.
 - Los medios comerciales de `references/private/` nunca se incorporan ni se publican.
+- Para narrativas, fichas de personajes y habilidades especiales, consultar [`docs/universo-lore-personajes.md`](docs/universo-lore-personajes.md). Todo el lore y los antecedentes de las clases serán públicos desde el inicio de la web, sin bloqueos por campañas, invitado o registro. Los nombres y el origen específico del brote todavía son ejemplos/propuestas, NO canon aprobado.
 
 ## Objetivo
 Desarrollar un juego 2D de zombis para navegador con combate híbrido y futura cooperación en línea. Responder en español en reportes de progreso.
