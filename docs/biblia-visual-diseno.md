@@ -1,7 +1,7 @@
 # DEAD ZONE: OUTBREAK — Biblia visual y de diseño
-**Versión:** 1.0 · **Idioma:** español · **Estado:** documento rector de producto y dirección artística.
+**Versión:** 1.1 · **Idioma:** español · **Estado:** documento rector de producto y dirección artística. **Complemento obligatorio:** [Arquitectura funcional, cuentas, inventario y servicios](arquitectura-funcional-producto.md), con decisiones recientes de equipamiento, salas, cosméticos y autenticación.
 
-> **Para Codex:** leer este documento junto con `AGENTS.md`, `docs/migracion-phaser.md` y `docs/diseno-multijugador.md` antes de planificar cambios. Este documento actualiza las decisiones creativas anteriores: **NO desarrollar DEAD ZONE como pixel art de 8 bits**. Implementar por entregas pequeñas, con pruebas y aprobación visual humana. La existencia de una sección aquí **no** implica que esté implementada.
+> **Para Codex:** leer este documento junto con `AGENTS.md`, `docs/migracion-phaser.md` y `docs/diseno-multijugador.md` antes de planificar cambios. Para cuentas, inventario, economía, salas e interfaz, leer también `docs/arquitectura-funcional-producto.md`. Este documento actualiza las decisiones creativas anteriores: **NO desarrollar DEAD ZONE como pixel art de 8 bits**. Implementar por entregas pequeñas, con pruebas y aprobación visual humana. La existencia de una sección aquí **no** implica que esté implementada.
 
 ## 1. Visión y promesa al jugador
 
@@ -26,6 +26,12 @@ Las dos fantasías principales:
 - **Caída y rescate:** los compañeros pueden acudir a levantar a uno incapacitado; si expira el tiempo, muere por ese mapa. Si el equipo restante completa el mapa, reaparecen todos al comenzar el siguiente.
 - **Mejoras cooperativas:** se votan opciones globales; cada jugador conserva sus mejoras individuales.
 - **Competición:** rankings separados por modo, mapa, dificultad y tamaño inicial del grupo; en campaña, tiempo de misión validado por servidor.
+- **Inventario:** el loot jugable dura una campaña completa, se conserva entre sus cuatro capítulos y se reinicia al empezar una campaña nueva; **solo casco, chaleco y mochila** como equipo de protección/carga.
+- **Muerte:** al finalizar el rescate sin éxito, se deja una **caja de loot** recuperable por aliados; si superan ese capítulo, el fallecido reaparece con equipo básico en el siguiente.
+- **Partidas abiertas:** salas en vivo con vacantes (`3/4`) y entrada de nuevos jugadores tras desconexión/abandono definitivo; el nuevo llega con equipo básico a una zona segura, sin sustituir a un muerto que siga en la sala.
+- **Cuenta:** Google, X, TikTok y registro propio como dirección futura; invitado efímero sin compras ni guardado permanente y opción de crear cuenta durante esa sesión.
+- **Cosméticos:** skins de armas compartidas por modelo compatible entre clases; conjuntos de ropa específicos para cada clase, con variantes coleccionables sin duplicados. La tienda no da ventajas jugables. Gacha de pago y monedas para tiradas **no están autorizados** hasta revisión legal posterior.
+- **Pantallas:** menús, bienvenida, lobby, Arsenal, perfil y tienda también siguen la identidad 2D ilustrada y deben ser aprobados visualmente.
 
 ## 2. Lenguaje visual (obligatorio)
 
@@ -69,7 +75,7 @@ Todos pueden moverse, disparar, usar dash, explorar, construir estructuras bási
 
 **Infectados base:** caminante, corredor, pesado/rompebarricadas; especiales posteriores: tóxico (zona peligrosa), gritón (llama refuerzos), saltador (supera obstáculos), atacante a distancia y jefes. No usar solamente más HP como dificultad. A cada clase especial darle telegráfica visual y sonora antes de atacar.
 
-**Combate:** clic sostenido para arma manual; sistema automático como apoyo; patrones claramente distintos de tiro triple simultáneo, ráfaga temporal, ametralladora, láser/perforación y ataques de área. Inspiración general en armas arcade clásicas; no reutilizar sprites, sonido ni nombres protegidos específicos de juegos ajenos.
+**Combate:** **arma personal única**, con apuntado automático cuando no se mantiene clic y apuntado manual al sostenerlo, compartiendo cadencia, cargador y munición (no doble disparo); patrones claramente distintos de tiro triple simultáneo, ráfaga temporal, ametralladora, láser/perforación y ataques de área. Inspiración general en armas arcade clásicas; no reutilizar sprites, sonido ni nombres protegidos específicos de juegos ajenos.
 
 ## 4. Cámara, mapas y transiciones
 
@@ -126,6 +132,7 @@ Estados: **activo → incapacitado → revivido o muerto**.
 - Si se agota el plazo, el jugador queda muerto/espectador hasta el fin de ese capítulo; mantiene comunicación y puede observar a compañeros sin revelar habitaciones inaccesibles.
 - Los supervivientes restantes **pueden completar el capítulo**. Si lo hacen, **los cuatro reaparecen en el capítulo siguiente**.
 - Si nadie queda vivo, el capítulo fracasa y se repite desde su inicio; no reiniciar automáticamente la campaña completa.
+- **Continuidad y muerte confirmadas:** el equipamiento encontrado se conserva entre los cuatro mapas de la misma campaña. La muerte definitiva genera una caja con todo el loot jugable recuperable por el equipo; los objetos no recogidos se pierden al cerrar el mapa. Al superar el capítulo, el fallecido vuelve en el siguiente **con kit básico**, sin recuperarlo mágicamente. El estado del inventario del resto del equipo no se reinicia por su muerte. Consultar [arquitectura funcional](arquitectura-funcional-producto.md) para las reglas de no duplicación.
 - El servidor valida daño, plazo, rescate, muerte, supervivientes y resultado; la experiencia debe evitar imposibles de rescate o softlocks.
 - Ranking de campaña mantiene el tiempo como criterio principal; registrar aparte supervivientes 4/4, rescates y distinción por evacuación perfecta sin sustituir el cronómetro.
 
@@ -139,19 +146,23 @@ En hitos entre oleadas o momentos seguros de campaña, el equipo elige **una ent
 
 La sala de selección Colyseus **ya existente en una rama de desarrollo** permite hasta cuatro jugadores, cuatro clases únicas, plazo de 30 segundos y asignación automática desde servidor, cuenta atrás de cinco segundos y reconexión con reserva de 20 segundos. **Conservar sus pruebas y contratos**; no confundir lobby con combate multijugador ya implementado.
 
+Las **salas públicas en curso**, su ocupación (p. ej. `3/4`), el reemplazo por abandono definitivo, la entrada en zona segura con equipo básico y las reservas de reconexión se especifican en [arquitectura funcional](arquitectura-funcional-producto.md). No confundir la reserva de 20 s del lobby de selección con una futura reserva configurable durante una partida.
+
 Plan de comunicación: **chat escrito** primero, **pings en mundo/minimapa** después, **voz opcional** en fase separada con control de mute, push-to-talk, privacidad, reconexión y costes de infraestructura (posible WebRTC/servicio especializado). No prometer que Colyseus por sí solo transmita voz.
 
 Rankings individuales y de equipos permanentes; campaña por menor tiempo de capítulo completado, supervivencia por mayor oleada. Servidor autoritativo, resultados verificables, categorías por dificultad, tamaño inicial del equipo, mapa/capítulo y versión de reglas. Equipos permanentes distintos de las salas temporales. No activar tablas SQL propuestas sin revisar migración, autenticación, autorizaciones y conservación de datos.
 
 ## 11. Diseño de interfaz y accesibilidad
 
-HUD discreto, no bloqueante: HP, dash, arma manual, arma automática, recursos de construcción, fase/objetivo, estado de compañeros, minimapa/piso, avisos de radio, indicador de rescate y voto cuando correspondan. Estética diegética ligera: placas metálicas desgastadas, pictogramas ilustrados y acentos de color, evitando un HUD puramente «8-bit».
+HUD discreto, no bloqueante: HP, dash, arma personal (modo manual/automático sin duplicación), munición y recarga, equipo de casco/chaleco/mochila, recursos de construcción, fase/objetivo, estado de compañeros, minimapa/piso, avisos de radio, indicador de rescate y voto cuando correspondan. Estética diegética ligera: placas metálicas desgastadas, pictogramas ilustrados y acentos de color, evitando un HUD puramente «8-bit».
+
+La **dirección artística aprobada** se extiende a **bienvenida, login, menú, perfiles, lobby, selección, Arsenal/Armario, mochila, tienda, misiones y rankings**. Ilustración original, personajes caricaturescos, contornos expresivos, luces y sombras amplias, jerarquía clara; evitar ventanas planas genéricas o una UI publicitaria recargada. Los menús HTML/CSS pueden compartir tokens gráficos con Phaser. Antes de implementar un catálogo, producir y revisar una pantalla de bienvenida y una de lobby. [Reglas completas](arquitectura-funcional-producto.md#8-uiux-la-identidad-visual-aplica-a-todo-el-producto).
 
 Opciones: subtítulos para toda voz de misión, controles remapeables en fase posterior, volumen separado (efectos/música/voz), no depender solo del color, modos de menor intensidad de efectos, reducir sacudidas/destellos, alto contraste y escala de interfaz. No tapar alertas críticas con números de daño masivos.
 
 ## 12. Arquitectura y producción de assets
 
-**Tecnología de partida:** Vite + TypeScript + Phaser para render, Colyseus para red, Playwright para E2E, PostgreSQL **futuro**, acorde con planes existentes. Conservar `public/legacy/index.html` como referencia hasta sustitución aprobada. Separar simulación (reglas compartidas, RNG semillado, ticks, IDs), presentación (Phaser), red (Colyseus), contenido (datos) y UI (DOM/Phaser). No trasladar reglas críticas al navegador si afectarán a rankings y multijugador.
+**Tecnología de partida:** Vite + TypeScript + Phaser para render, Colyseus para red, Playwright para E2E, PostgreSQL **futuro** para identidad, derechos cosméticos, economía auditada y rankings, acorde con planes existentes. Conservar `public/legacy/index.html` como referencia hasta sustitución aprobada. Separar simulación (reglas compartidas, RNG semillado, ticks, IDs), presentación (Phaser), red (Colyseus), contenido (datos) y UI (DOM/Phaser). No trasladar reglas críticas al navegador si afectarán a rankings y multijugador.
 
 **Biblioteca de arte original:** organizar `public/assets/` por `characters/`, `enemies/`, `world/`, `buildables/`, `vfx/`, `ui/`, `audio/`; documentar para cada recurso resolución de origen, versiones, puntos de anclaje, hitbox, estados, atlas, autor/licencia y uso. Trabajar con capas PNG/SVG/atlas exportados según convenga; no estirar arte raster a gran escala sin revisar nitidez.
 
@@ -197,6 +208,10 @@ Opciones: subtítulos para toda voz de misión, controles remapeables en fase po
 - Tamaño lógico del mapa, zoom final y técnicas específicas de animación después de revisión de la primera escena.
 - Audio de voces de radio (grabado, sintetizado con permisos y licencias, o solo subtítulos).
 - Política exacta de votación cuando haya muertos/desconectados.
+- Tiempo de reconexión en combate y cómo conservar, soltar o proteger inventario del avatar desconectado.
+- Equipamiento al reiniciar un capítulo fallido y límites/capacidad/rareza del loot.
+- Qué progreso de invitado puede convertirse en cuenta permanente sin duplicar recompensas.
+- Normativa aplicable a gacha de pago, probabilidades, edad, plataformas y condiciones de compra: **no desarrollar cobros aleatorios antes de validación legal**.
 - Requisitos de servidor, coste y privacidad para chat de voz en línea.
 - Reglas de ranking oficiales ante semillas de clima, abandonos y extracción parcial.
 
