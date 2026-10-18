@@ -31,7 +31,7 @@ Las dos fantasías principales:
 - **Partidas abiertas:** salas en vivo con vacantes (`3/4`) y entrada de nuevos jugadores tras desconexión/abandono definitivo; el nuevo llega con equipo básico a una zona segura, sin sustituir a un muerto que siga en la sala.
 - **Cuenta:** Google, X, TikTok y registro propio como dirección futura; invitado efímero sin compras ni guardado permanente y opción de crear cuenta durante esa sesión.
 - **Cosméticos:** skins de armas compartidas por modelo compatible entre clases; conjuntos de ropa específicos para cada clase, con variantes coleccionables sin duplicados. La tienda no da ventajas jugables. Gacha de pago y monedas para tiradas **no están autorizados** hasta revisión legal posterior.
-- **Pantallas:** menús, bienvenida, lobby, Arsenal, perfil y tienda también siguen la identidad 2D ilustrada y deben ser aprobados visualmente.
+- **Pantallas:** menús, bienvenida, lobby, Arsenal, perfil, tienda y sección pública de Universo/Historia también siguen la identidad 2D ilustrada y deben ser aprobados visualmente.
 
 ## 2. Lenguaje visual (obligatorio)
 
@@ -154,6 +154,9 @@ Rankings individuales y de equipos permanentes; campaña por menor tiempo de cap
 
 ## 11. Diseño de interfaz y accesibilidad
 
+**Lore público desde el inicio (DECISIÓN CONFIRMADA):** la historia completa del apocalipsis y los antecedentes completos de cada personaje estarán disponibles directamente en la web desde el primer ingreso, incluso como invitado y sin completar campañas. Incluir navegación a Universo/Historia, Cronología, Supervivientes, Campañas y archivos complementarios, con el mismo estilo ilustrado V4. El canon (origen exacto, nombres y biografías) todavía requiere redacción y aprobación; no confundir ejemplos anteriores con historia definitiva. Las escenas de campaña dramatizan y amplían hechos, no bloquean información narrativa esencial. Ver [Universo, lore y protagonistas](universo-lore-personajes.md).
+
+
 HUD discreto, no bloqueante: HP, dash, arma personal (modo manual/automático sin duplicación), munición y recarga, equipo de casco/chaleco/mochila, recursos de construcción, fase/objetivo, estado de compañeros, minimapa/piso, avisos de radio, indicador de rescate y voto cuando correspondan. Estética diegética ligera: placas metálicas desgastadas, pictogramas ilustrados y acentos de color, evitando un HUD puramente «8-bit».
 
 La **dirección artística aprobada** se extiende a **bienvenida, login, menú, perfiles, lobby, selección, Arsenal/Armario, mochila, tienda, misiones y rankings**. Ilustración original, personajes caricaturescos, contornos expresivos, luces y sombras amplias, jerarquía clara; evitar ventanas planas genéricas o una UI publicitaria recargada. Los menús HTML/CSS pueden compartir tokens gráficos con Phaser. Antes de implementar un catálogo, producir y revisar una pantalla de bienvenida y una de lobby. [Reglas completas](arquitectura-funcional-producto.md#8-uiux-la-identidad-visual-aplica-a-todo-el-producto).
@@ -203,6 +206,7 @@ Opciones: subtítulos para toda voz de misión, controles remapeables en fase po
 
 ## 15. Decisiones pendientes (no asumir automáticamente)
 
+- Canon narrativo (origen y cronología del apocalipsis), nombres y biografías completas de los protagonistas, y diseño/balance final de habilidades especiales por clase, según `docs/universo-lore-personajes.md`.
 - Duraciones reales de oleadas y tiempos de rescate después de medir mapas.
 - Economía de créditos/materiales, límites de torretas, balance de armas y número de niveles de mejora.
 - Tamaño lógico del mapa, zoom final y técnicas específicas de animación después de revisión de la primera escena.
