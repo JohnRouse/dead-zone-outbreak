@@ -3,6 +3,9 @@
 ## Documento rector de diseño
 - Antes de planificar tareas, leer [`docs/biblia-visual-diseno.md`](docs/biblia-visual-diseno.md). Sus decisiones creativas reemplazan las referencias anteriores a 8 bits/pixel art. Implementar por etapas con aprobación visual humana.
 - Distinguir visión futura de funcionalidades que realmente existen. No intentar desarrollar toda la biblia en un solo encargo.
+- Para cambios de inventario, tiendas, menús, cuentas, campaña, salas y base de datos, leer también [`docs/arquitectura-funcional-producto.md`](docs/arquitectura-funcional-producto.md). Respetar sus etiquetas CONFIRMADO/PROPUESTA/PENDIENTE.
+- No implementar gacha de pago, monedas para tiradas ni compras aleatorias mientras no exista revisión legal y autorización explícita. No implementar persistencia de armas físicas entre campañas: solo cosméticos son permanentes.
+- Los medios comerciales de `references/private/` nunca se incorporan ni se publican.
 
 ## Objetivo
 Desarrollar un juego 2D de zombis para navegador con combate híbrido y futura cooperación en línea. Responder en español en reportes de progreso.
@@ -10,7 +13,7 @@ Desarrollar un juego 2D de zombis para navegador con combate híbrido y futura c
 ## Reglas principales
 - Mantener jugables: WASD/flechas, apuntar con mouse, clic sostenido para disparo manual, arma automática y dash con Espacio/Shift.
 - No eliminar funcionalidades existentes sin documentar el motivo y consultar antes de cambios irreversibles.
-- Combate: armas manuales y automáticas evolucionables, cadencia, disparo triple, láser, ráfagas y perforación claramente diferenciados.
+- Combate: **una sola arma personal** con apuntado manual/automático y misma cadencia/munición, sin duplicaciones. Evoluciones (triple, láser, ráfaga y perforación) deben diferenciarse visualmente; estructuras defensivas tienen armas independientes.
 - La dificultad no debe volverse trivial después de subir de nivel: medir daño recibido, presión de hordas y capacidad de supervivencia.
 - Escenario explorable, mayor que la pantalla; cámara siguiendo al personaje, colisiones coherentes y puntos de interés.
 - Arte 2D **ilustrado, NO pixel art**, original y consistente; estética colorida pero sombría, top-down, sombras e iluminación expresiva. Evitar sprites geométricos provisionales como versión final y no usar assets de juegos comerciales sin licencia.
