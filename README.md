@@ -4,9 +4,11 @@ Juego de supervivencia zombi 2D para navegador, con combate híbrido (disparo ma
 
 ## Biblia de diseño y nueva dirección artística
 
-**Documentos rectores para Codex:** [Biblia visual y de diseño](docs/biblia-visual-diseno.md) y [Arquitectura funcional del producto](docs/arquitectura-funcional-producto.md). La nueva dirección es **2D ilustrado, top-down, colorida pero sombría**, con personajes caricaturescos e iluminación dinámica. **Se descartó el pixel art de 8 bits.** Las referencias sirven de inspiración; no se reutilizan recursos de otros juegos sin licencia.
+**Documentos rectores para Codex:** [Biblia visual y de diseño](docs/biblia-visual-diseno.md), [Arquitectura funcional del producto](docs/arquitectura-funcional-producto.md) y [Universo, lore y protagonistas](docs/universo-lore-personajes.md). La nueva dirección es **2D ilustrado, top-down, colorida pero sombría**, con personajes caricaturescos e iluminación dinámica. **Se descartó el pixel art de 8 bits.** Las referencias sirven de inspiración; no se reutilizan recursos de otros juegos sin licencia.
 
 ## Estado
+
+La historia del apocalipsis y las biografías completas de los personajes estarán **disponibles públicamente desde el comienzo en la web**, también para visitantes sin cuenta. El canon concreto todavía se redactará y aprobará; las habilidades especiales de clase son propuestas, no están implementadas.
 
 La arquitectura funcional define **planes**, no sistemas terminados: inventario de campaña, caja de loot al morir, salas públicas con entrada a partidas iniciadas, cuentas/invitados, cosméticos por personaje o modelo de arma, retos/recompensas y UI ilustrada para lobby/perfil/tienda. Las compras aleatorias pagadas **no están aprobadas**. Mantener separadas las funciones previstas de las pruebas ya implementadas.
 
